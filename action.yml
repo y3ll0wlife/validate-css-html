@@ -1,0 +1,5 @@
+name: "Validate CSS and HTML"
+description: "GitHub Action to validate CSS and HTML"
+runs:
+  using: "node12"
+  main: "dist/index.js"
