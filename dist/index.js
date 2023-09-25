@@ -22181,6 +22181,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
                                 msg = [
                                     "# Filename: ".concat(file.filename),
                                     "# Link: ".concat(file.contents_url),
+                                    "---",
                                 ];
                                 problem = false;
                                 if (validation.css.errors.length > 0 ||
@@ -22221,11 +22222,11 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
                                     })];
                             case 8:
                                 _k.sent();
-                                return [2 /*return*/, (0, core_1.error)("Validation errors was found, commented on the commit")];
+                                _k.label = 9;
                             case 9:
                                 _g++;
                                 return [3 /*break*/, 2];
-                            case 10: return [2 /*return*/, (0, core_1.info)("No validation errors was found")];
+                            case 10: return [2 /*return*/, (0, core_1.info)("Validation done")];
                             case 11:
                                 error_3 = _k.sent();
                                 (0, core_1.setFailed)((0, core_1.isDebug)() ? error_3.stack : error_3.message);

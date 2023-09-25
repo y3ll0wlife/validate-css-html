@@ -74,6 +74,7 @@ async function run() {
       let msg: string[] = [
         `# Filename: ${file.filename}`,
         `# Link: ${file.contents_url}`,
+        `---`,
       ];
       let problem: boolean = false;
 
@@ -122,11 +123,10 @@ async function run() {
           commit_sha: commitSha,
           body: msg.join("\n"),
         });
-        return error("Validation errors was found, commented on the commit");
       }
     }
 
-    return info("No validation errors was found");
+    return info("Validation done");
   } catch (error) {
     setFailed(isDebug() ? error.stack : error.message);
   }
