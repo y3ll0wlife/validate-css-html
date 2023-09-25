@@ -22070,9 +22070,9 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
             var w3c_html_validator_1 = __nccwpck_require__(2353);
             function validateHTML(content) {
                 return __awaiter(this, void 0, void 0, function () {
-                    var warnings, errors, options, result;
-                    return __generator(this, function (_f) {
-                        switch (_f.label) {
+                    var warnings, errors, options, report, _f, _g, msg, message;
+                    return __generator(this, function (_h) {
+                        switch (_h.label) {
                             case 0:
                                 warnings = [];
                                 errors = [];
@@ -22082,8 +22082,15 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
                                 };
                                 return [4 /*yield*/, w3c_html_validator_1.w3cHtmlValidator.validate(options)];
                             case 1:
-                                result = _f.sent();
-                                console.log(result);
+                                report = _h.sent();
+                                for (_f = 0, _g = report.messages; _f < _g.length; _f++) {
+                                    msg = _g[_f];
+                                    message = "Line ".concat(msg.lastLine, ": ").concat(msg.message, "\n**Extracted Line**\n```html\n").concat(msg.extract, "```");
+                                    if (msg.type === "error")
+                                        errors.push(message);
+                                    else
+                                        warnings.push(message);
+                                }
                                 return [2 /*return*/, {
                                         warnings: warnings,
                                         errors: errors
