@@ -5,9 +5,11 @@ interface CSSValidation {
   warnings: string[];
 }
 
-export default async function validateCSS(content: string): Promise<CSSValidation> {
-  let warnings = [];
-  let errors = [];
+export default async function validateCSS(
+  content: string
+): Promise<CSSValidation> {
+  let warnings: string[] = [];
+  let errors: string[] = [];
 
   const result = await cssValidator.validateText(content, {
     medium: "print",
@@ -15,8 +17,14 @@ export default async function validateCSS(content: string): Promise<CSSValidatio
   });
 
   if (!result.valid) {
-    errors.push(result.errors.map((x) => `Line ${x.line}: ${x.message}`).join("\n"));
-    warnings.push(result.warnings.map((x) => `Line ${x.line} (${x.level}): ${x.message}`).join("\n"));
+    errors.push(
+      result.errors.map((x) => `Line ${x.line}: ${x.message}`).join("\n")
+    );
+    warnings.push(
+      result.warnings
+        .map((x) => `Line ${x.line} (${x.level}): ${x.message}`)
+        .join("\n")
+    );
   }
 
   return {

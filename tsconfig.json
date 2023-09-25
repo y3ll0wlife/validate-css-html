@@ -1,21 +1,13 @@
 {
-    "compilerOptions": {
-        "target": "es2018",
-        "module": "commonjs",
-        "lib": ["ES2019.Array"],
-
-        "outDir": "dist",
-        "rootDir": "src",
-
-        "sourceMap": true,
-        "skipLibCheck": true,
-
-        "moduleResolution": "node",
-        "esModuleInterop": true,
-
-        "forceConsistentCasingInFileNames": true
-    },
-    "exclude": [
-        "node_modules"
-    ]
+  "compilerOptions": {
+    "target": "es2018",
+    "module": "commonjs",
+    "lib": ["ES2019.Array"],
+    "outDir": "dist",
+    "sourceMap": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "exclude": ["node_modules"]
 }

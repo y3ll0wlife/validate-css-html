@@ -1,10 +1,21 @@
 import { error, info, isDebug, setFailed } from "@actions/core";
 import { context, getOctokit } from "@actions/github";
 import type { PushEvent } from "@octokit/webhooks-types";
-import validateCSS from "./css";
-import validateHTML from "./html";
+import validateCSS from "./css.js";
+import validateHTML from "./html.js";
 
 const token = process.env.GITHUB_TOKEN;
+
+interface Validation {
+  css: {
+    errors: string[];
+    warnings: string[];
+  };
+  html: {
+    errors: string[];
+    warnings: string[];
+  };
+}
 
 async function run() {
   try {
@@ -26,7 +37,9 @@ async function run() {
 
     const files = commit.data.files;
 
-    let validation = {
+    if (!files) return;
+
+    let validation: Validation = {
       css: {
         errors: [],
         warnings: [],
@@ -44,7 +57,9 @@ async function run() {
         file_sha: file.sha,
       });
 
-      const content = Buffer.from(fileBlob.data.content, "base64").toString("utf8");
+      const content = Buffer.from(fileBlob.data.content, "base64").toString(
+        "utf8"
+      );
 
       if (file.filename.endsWith(".css")) {
         const { warnings, errors } = await validateCSS(content);
@@ -60,7 +75,10 @@ async function run() {
     let msg: string[] = [];
     let problem: boolean = false;
 
-    if (validation.css.errors.length > 0 || validation.css.warnings.length > 0) {
+    if (
+      validation.css.errors.length > 0 ||
+      validation.css.warnings.length > 0
+    ) {
       problem = true;
       msg.push("# CSS Validation Problem\n");
 
@@ -73,7 +91,10 @@ async function run() {
         msg.push("### Warnings");
         msg.push(validation.css.warnings.join("\n"));
       }
-    } else if (validation.html.errors.length > 0 || validation.html.warnings.length > 0) {
+    } else if (
+      validation.html.errors.length > 0 ||
+      validation.html.warnings.length > 0
+    ) {
       if (problem) {
         msg.push("---");
       }

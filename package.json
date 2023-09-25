@@ -3,6 +3,7 @@
   "version": "1.0.8",
   "description": "GitHub Action to validate CSS and HTML files",
   "type": "commonjs",
+  "license": "MIT",
   "main": "dist/index.js",
   "scripts": {
     "build": "ncc build src/index.ts -o out && tsc out/index.js --outDir dist --allowJs --sourceMap false",
@@ -19,8 +20,8 @@
     "@actions/core": "^1.9.1",
     "@actions/github": "^5.1.0",
     "@vercel/ncc": "^0.38.0",
-    "html-validate": "^8.4.1",
-    "w3c-css-validator": "^1.3.1"
+    "w3c-css-validator": "^1.3.1",
+    "w3c-html-validator": "^1.5.1"
   },
   "devDependencies": {
     "@octokit/webhooks-types": "^6.3.6",

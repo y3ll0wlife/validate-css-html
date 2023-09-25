@@ -1,4 +1,4 @@
-import { HtmlValidate } from "html-validate/node";
+import { ValidatorSettings, w3cHtmlValidator } from "w3c-html-validator";
 
 interface HTMLValidation {
   errors: string[];
@@ -8,13 +8,15 @@ interface HTMLValidation {
 export default async function validateHTML(
   content: string
 ): Promise<HTMLValidation> {
-  let warnings = [];
-  let errors = [];
+  let warnings: string[] = [];
+  let errors: string[] = [];
 
-  const htmlvalidate = new HtmlValidate();
-  const report = await htmlvalidate.validateString(content);
-
-  console.log(report);
+  const options: Partial<ValidatorSettings> = {
+    html: content,
+    output: "json",
+  };
+  const result = await w3cHtmlValidator.validate(options);
+  console.log(result);
 
   return {
     warnings,
