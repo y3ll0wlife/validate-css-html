@@ -22179,8 +22179,8 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
                                 _k.label = 7;
                             case 7:
                                 msg = [
-                                    "# Filename: ".concat(file.filename),
-                                    "# Link: ".concat(file.contents_url),
+                                    "## Filename: ".concat(file.filename),
+                                    "### Link: ".concat(file.raw_url),
                                     "---",
                                 ];
                                 problem = false;

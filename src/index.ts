@@ -72,8 +72,8 @@ async function run() {
       }
 
       let msg: string[] = [
-        `# Filename: ${file.filename}`,
-        `# Link: ${file.contents_url}`,
+        `## Filename: ${file.filename}`,
+        `### Link: ${file.raw_url}`,
         `---`,
       ];
       let problem: boolean = false;
