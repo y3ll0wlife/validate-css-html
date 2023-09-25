@@ -21,7 +21,7 @@ jobs:
         with:
           node-version: '15'
       - name: Validate CSS and HTML
-        uses: y3ll0wlife/validate-css-htmln@master
+        uses: y3ll0wlife/validate-css-html@master
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 ```
