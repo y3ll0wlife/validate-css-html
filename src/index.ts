@@ -39,18 +39,18 @@ async function run() {
 
     if (!files) return;
 
-    let validation: Validation = {
-      css: {
-        errors: [],
-        warnings: [],
-      },
-      html: {
-        errors: [],
-        warnings: [],
-      },
-    };
-
     for (let file of files) {
+      let validation: Validation = {
+        css: {
+          errors: [],
+          warnings: [],
+        },
+        html: {
+          errors: [],
+          warnings: [],
+        },
+      };
+
       const fileBlob = await octokit.rest.git.getBlob({
         owner,
         repo,
@@ -70,57 +70,60 @@ async function run() {
         validation.html.errors = errors;
         validation.html.warnings = warnings;
       }
-    }
 
-    let msg: string[] = [];
-    let problem: boolean = false;
+      let msg: string[] = [
+        `# Filename: ${file.filename}`,
+        `# Link: ${file.contents_url}`,
+      ];
+      let problem: boolean = false;
 
-    if (
-      validation.css.errors.length > 0 ||
-      validation.css.warnings.length > 0
-    ) {
-      problem = true;
-      msg.push("# CSS Validation Problem\n");
+      if (
+        validation.css.errors.length > 0 ||
+        validation.css.warnings.length > 0
+      ) {
+        problem = true;
+        msg.push("## CSS Validation Problem\n");
 
-      if (validation.css.errors.length > 0) {
-        msg.push("### Errors");
-        msg.push(validation.css.errors.join("\n"));
+        if (validation.css.errors.length > 0) {
+          msg.push("### Errors");
+          msg.push(validation.css.errors.join("\n"));
+        }
+
+        if (validation.css.warnings.length > 0) {
+          msg.push("### Warnings");
+          msg.push(validation.css.warnings.join("\n"));
+        }
+      } else if (
+        validation.html.errors.length > 0 ||
+        validation.html.warnings.length > 0
+      ) {
+        if (problem) {
+          msg.push("---");
+        }
+
+        problem = true;
+        msg.push("## HTML Validation Problem\n");
+
+        if (validation.html.errors.length > 0) {
+          msg.push("### Errors");
+          msg.push(validation.html.errors.join("\n"));
+        }
+
+        if (validation.html.warnings.length > 0) {
+          msg.push("### Warnings");
+          msg.push(validation.html.warnings.join("\n"));
+        }
       }
 
-      if (validation.css.warnings.length > 0) {
-        msg.push("### Warnings");
-        msg.push(validation.css.warnings.join("\n"));
-      }
-    } else if (
-      validation.html.errors.length > 0 ||
-      validation.html.warnings.length > 0
-    ) {
       if (problem) {
-        msg.push("---");
+        await octokit.rest.repos.createCommitComment({
+          owner,
+          repo,
+          commit_sha: commitSha,
+          body: msg.join("\n"),
+        });
+        return error("Validation errors was found, commented on the commit");
       }
-
-      problem = true;
-      msg.push("# HTML Validation Problem\n");
-
-      if (validation.html.errors.length > 0) {
-        msg.push("### Errors");
-        msg.push(validation.html.errors.join("\n"));
-      }
-
-      if (validation.html.warnings.length > 0) {
-        msg.push("### Warnings");
-        msg.push(validation.html.warnings.join("\n"));
-      }
-    }
-
-    if (problem) {
-      await octokit.rest.repos.createCommitComment({
-        owner,
-        repo,
-        commit_sha: commitSha,
-        body: msg.join("\n"),
-      });
-      return error("Validation errors was found, commented on the commit");
     }
 
     return info("No validation errors was found");

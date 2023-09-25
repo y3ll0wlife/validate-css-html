@@ -22116,7 +22116,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
             var token = process.env.GITHUB_TOKEN;
             function run() {
                 return __awaiter(this, void 0, void 0, function () {
-                    var octokit, _f, owner, repo, payload, commitSha, commit, files, validation, _g, files_2, file, fileBlob, content, _h, warnings, errors, _j, warnings, errors, msg, problem, error_3;
+                    var octokit, _f, owner, repo, payload, commitSha, commit, files, _g, files_2, file, validation, fileBlob, content, _h, warnings, errors, _j, warnings, errors, msg, problem, error_3;
                     return __generator(this, function (_k) {
                         switch (_k.label) {
                             case 0:
@@ -22139,6 +22139,11 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
                                 files = commit.data.files;
                                 if (!files)
                                     return [2 /*return*/];
+                                _g = 0, files_2 = files;
+                                _k.label = 2;
+                            case 2:
+                                if (!(_g < files_2.length)) return [3 /*break*/, 10];
+                                file = files_2[_g];
                                 validation = {
                                     css: {
                                         errors: [],
@@ -22149,11 +22154,6 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
                                         warnings: []
                                     }
                                 };
-                                _g = 0, files_2 = files;
-                                _k.label = 2;
-                            case 2:
-                                if (!(_g < files_2.length)) return [3 /*break*/, 8];
-                                file = files_2[_g];
                                 return [4 /*yield*/, octokit.rest.git.getBlob({
                                         owner: owner,
                                         repo: repo,
@@ -22178,15 +22178,15 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
                                 validation.html.warnings = warnings;
                                 _k.label = 7;
                             case 7:
-                                _g++;
-                                return [3 /*break*/, 2];
-                            case 8:
-                                msg = [];
+                                msg = [
+                                    "# Filename: ".concat(file.filename),
+                                    "# Link: ".concat(file.contents_url),
+                                ];
                                 problem = false;
                                 if (validation.css.errors.length > 0 ||
                                     validation.css.warnings.length > 0) {
                                     problem = true;
-                                    msg.push("# CSS Validation Problem\n");
+                                    msg.push("## CSS Validation Problem\n");
                                     if (validation.css.errors.length > 0) {
                                         msg.push("### Errors");
                                         msg.push(validation.css.errors.join("\n"));
@@ -22202,7 +22202,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
                                         msg.push("---");
                                     }
                                     problem = true;
-                                    msg.push("# HTML Validation Problem\n");
+                                    msg.push("## HTML Validation Problem\n");
                                     if (validation.html.errors.length > 0) {
                                         msg.push("### Errors");
                                         msg.push(validation.html.errors.join("\n"));
@@ -22212,16 +22212,19 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
                                         msg.push(validation.html.warnings.join("\n"));
                                     }
                                 }
-                                if (!problem) return [3 /*break*/, 10];
+                                if (!problem) return [3 /*break*/, 9];
                                 return [4 /*yield*/, octokit.rest.repos.createCommitComment({
                                         owner: owner,
                                         repo: repo,
                                         commit_sha: commitSha,
                                         body: msg.join("\n")
                                     })];
-                            case 9:
+                            case 8:
                                 _k.sent();
                                 return [2 /*return*/, (0, core_1.error)("Validation errors was found, commented on the commit")];
+                            case 9:
+                                _g++;
+                                return [3 /*break*/, 2];
                             case 10: return [2 /*return*/, (0, core_1.info)("No validation errors was found")];
                             case 11:
                                 error_3 = _k.sent();
