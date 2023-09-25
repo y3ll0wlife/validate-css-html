@@ -18,7 +18,7 @@ export default async function validateHTML(
   const report = await w3cHtmlValidator.validate(options);
 
   for (let msg of report.messages) {
-    const message = `Line ${msg.lastLine}: ${msg.message}\n**Extracted Line**\n\`\`\`html\n${msg.extract}\`\`\``;
+    const message = `Line ${msg.lastLine}: ${msg.message}\n**Extracted Line**\n\`\`\`html\n${msg.extract}\n\`\`\``;
 
     if (msg.type === "error") errors.push(message);
     else warnings.push(message);

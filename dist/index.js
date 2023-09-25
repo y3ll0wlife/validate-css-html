@@ -22085,7 +22085,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
                                 report = _h.sent();
                                 for (_f = 0, _g = report.messages; _f < _g.length; _f++) {
                                     msg = _g[_f];
-                                    message = "Line ".concat(msg.lastLine, ": ").concat(msg.message, "\n**Extracted Line**\n```html\n").concat(msg.extract, "```");
+                                    message = "Line ".concat(msg.lastLine, ": ").concat(msg.message, "\n**Extracted Line**\n```html\n").concat(msg.extract, "\n```");
                                     if (msg.type === "error")
                                         errors.push(message);
                                     else
